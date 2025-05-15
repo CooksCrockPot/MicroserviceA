@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5555
 
 # Command to run your application
-CMD ["python", "your_microservice.py"]
+CMD ["python", "microserviceA.py"]
