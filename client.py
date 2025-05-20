@@ -1,13 +1,18 @@
+import time
 import zmq
 
 context = zmq.Context()
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
-print("Sending first location request...")
-socket.send_string("San Francisco, CA")
-message = socket.recv_string()
-print(f"Server replied: {message}")
+locations = ["San Francisco, CA", "Los Angeles, CA", "Portland, OR", "Eugene, OR", "Seattle, WA", "Vancouver, WA", "Boise, Idaho", "Tuscon, AZ"]
+
+for location in locations:
+    print("Sending location request...")
+    socket.send_string(location)
+    message = socket.recv_string()
+    print(f"Server replied: {message}")
+    time.sleep(3)
 
 print("Sending shutdown signal...")
 socket.send_string("Q")
