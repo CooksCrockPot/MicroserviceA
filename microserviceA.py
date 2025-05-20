@@ -1,9 +1,11 @@
-import zmq
 import time
-from geopy.geocoders import Nominatim
+
+import zmq
 from geopy.exc import GeocoderTimedOut
+from geopy.geocoders import Nominatim
 
 geolocator = Nominatim(user_agent="microserviceA")
+
 
 def findLngLat(findLocation):
     try:
@@ -17,6 +19,7 @@ def findLngLat(findLocation):
     else:
         return "Location not found"
 
+
 def main():
     context = zmq.Context()
     socket = context.socket(zmq.REP)
@@ -25,26 +28,29 @@ def main():
 
     try:
         while True:
-            message = socket.recv()
-            decoded = message.decode()
-            print(f"Received: {decoded}")
+            message = socket.recv_string()
+            print(f"Received: {message}")
 
-            if not decoded:
+            if not message:
                 socket.send_string("Invalid input.")
                 continue
 
-            if decoded.upper() == 'Q':
+            if message.upper() == "Q":
                 socket.send_string("Shutting down.")
                 break
 
-            response = findLngLat(decoded)
+            response = findLngLat(message)
             time.sleep(3)
             socket.send_string(response)
+
+    except Exception as e:
+        print(f"Error while processing message: {e}")
 
     finally:
         socket.close()
         context.term()
         print("Server shut down.")
+
 
 if __name__ == "__main__":
     main()
