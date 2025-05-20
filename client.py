@@ -5,7 +5,8 @@ context = zmq.Context()
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
-locations = ["San Francisco, CA", "Los Angeles, CA", "Portland, OR", "Eugene, OR", "Seattle, WA", "Vancouver, WA", "Boise, Idaho", "Tuscon, AZ"]
+locations = ["San Francisco, CA", "Los Angeles, CA", "Portland, OR",
+             "Eugene, OR", "Seattle, WA", "Vancouver, WA", "Boise, Idaho"]
 
 for location in locations:
     print("Sending location request...")
